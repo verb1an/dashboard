@@ -1,38 +1,31 @@
 <template>
-    <div class="popap popap__message" :class="type">
-        <h3 class="title">{{ title }}</h3>
-        <div class="text">
-            <p>{{ message }}</p>
+    <transition name="message-window" appear>
+        <div class="popap popap__message" v-if="message.show" :class="message.type">
+        <!--  -->
+            <h3 class="title">{{ message.title }}</h3>
+            <div class="text">
+                <p>{{ message.text }}</p>
+            </div>
+            <btn-def @click="closeMessageDialog">OK</btn-def>
         </div>
-        <btn-def @click="closeWindow">OK</btn-def>
-    </div>
+    </transition>
+    
 </template>
 
 <script>
     export default {
         name: 'message-window',
         props: {
-            title: {
-                type: String,
-                required: true
-            },
             message: {
-                type: String,
-                required: false
-            },
-            type: {
-                type: String, 
-                rquired: false
+                type: Object,
+                required: true
             }
         },
         methods: {
-            closeWindow() {
-                if(this.type == 'message') {
-                    this.$emit('closewindow:redirect');
-                }else{
-                    this.$emit('closewindow:stay');
-                }
+            closeMessageDialog() {
+                if( this.message.redirect != 'false' ) {this.$router.push(this.message.redirect);}
                 
+                this.$emit('dialog:close');
             }
         }
     }
@@ -83,5 +76,12 @@
             color: vars.$red-color;
         }
     }
+}
+.message-window-enter-active, .message-window-leave-active {
+    transition: 0.3s ease;
+}
+.message-window-enter-from,.message-window-leave-to {
+    opacity: 0; 
+    transform: translate(-50%, -15px) scale(0.95);
 }
 </style>

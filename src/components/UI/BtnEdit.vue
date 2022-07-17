@@ -1,6 +1,6 @@
 <template>
     <button class="btn btn--edit" type="button">
-        <span :class="icon"></span>
+        <span v-if="icon" :class="icon"></span>
         <h4><slot></slot></h4>
     </button>
 </template>
@@ -42,7 +42,9 @@
             margin-right: 10px;
         }
 
-        
+        &.dark{
+            background-color: vars.$dark-color-05;
+        }
 
         &.red{
             background-color: vars.$red-color-07;

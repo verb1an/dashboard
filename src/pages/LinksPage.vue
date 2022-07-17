@@ -55,14 +55,14 @@
                     </tr>
                     <transition-group name="table-tr" appear>
                         <tr v-for="link in links" :key="link.id" :data-id="link.id">
-                            <td>
+                            <td class="td__check">
                                 <input-check :icon="'i-check'" class="check__link" @change="selectItem" />
                             </td>
-                            <td @click="$router.push('/links/' + link.id)" class="table__link">#id-{{ link.id }}</td>
-                            <td @click="$router.push('/links/' + link.id)" class="table__link">{{ link.name }}</td>
+                            <td @click="$router.push('/links/' + link.id)" class="td__link">#id-{{ link.id }}</td>
+                            <td @click="$router.push('/links/' + link.id)" class="td__link">{{ link.name }}</td>
                             <td>{{ link.status }}</td>
                             <td>{{ link.parent }}</td>
-                            <td class="table__info">
+                            <td class="td__quiks">
                                 <btn-icn :icon="'i-more'" />
                             </td>
                         </tr>
@@ -81,6 +81,7 @@
     </div>
 
     <table-nav
+        v-if="viewedPages.length > 1"
         :vPages="viewedPages"
         :page="page"
         @set:page="setPage"
@@ -97,10 +98,6 @@
             :toTrash="selected"
         />
     </transition>
-
-    <!-- <transition name="message-window">
-         <message-window/> 
-    </transition> -->
 
 </template>
 
@@ -165,7 +162,12 @@ export default {
                 }
                 
             }catch(e) {
-                console.log('Ошибка - ' + e);
+                this.$emit('dialog:open', {
+                    type: 'error',
+                    title: 'Неизвестная ошибка',
+                    text: e,
+                    redirect: false
+                });
             } finally {
                 this.showLoad = false;
             }
@@ -281,8 +283,26 @@ export default {
                 padding: 20px 50px 20px 10px;
                 width: 100%;
                 cursor: pointer;
+                &.td__link{
+                    &::before{
+                        content: '';
+                        position: absolute;
+                        top: 50%;
+                        left: -1px;
+                        height: 0;
+                        transform: translateY(-50%);
+                        width: 2px;
+                        background-color: vars.$dark-color-05;
+                        transition: 0.12s;
+                    }
+                    &:hover{
+                        &::before{
+                            height: 100%;
+                        }
+                    }
+                }
 
-                &.table__info{
+                &.td__quiks{
                     padding-right: 10px;
                     text-align: right;
                     display: flex;

@@ -8,18 +8,56 @@
                     <div class="content">
                         
                         <div class="content-wrapper">
-                            <router-view></router-view>
+                            <router-view
+                                @dialog:open="openMessageDialog"
+                            ></router-view>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
-        
+
+        <message-window 
+            :message="message"
+            @dialog:close="closeMessageDialog"
+        />
+
     </div>
 </template>
 
 <script>
 export default {
+    data() {
+        return {
+            message: {
+                show: false,
+                type: '',
+                title: '',
+                text: '',
+                redirect: false
+            }
+        }
+    },
+    methods: {
+        openMessageDialog(mess) {
+            this.message = {
+                type: mess.type,
+                title: mess.title,
+                text: mess.text,
+                redirect: mess.redirect
+            }
+            this.message.show = true;
+        },
+        closeMessageDialog() {
+            this.message = {
+                show: false,
+                type: '',
+                title: '',
+                text: '',
+                redirect: false
+            }
+        }
+    }
 }
 </script>
 

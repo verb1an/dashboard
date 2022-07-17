@@ -30,10 +30,13 @@
         } 
     }
     span{
+        height: 20px;
+        display: block;
         color: vars.$dark-color;
         opacity: 0.7;
         font-size: 20px;
         transition: 0.12s;
+        transform-origin: center;
     }
 
     &.icon--white{
@@ -54,7 +57,9 @@
         }
     }
     &:active{
-        transform: scale(0.95);
+        span{
+            transform: scale(0.95);
+        }
     }
 }
 </style>

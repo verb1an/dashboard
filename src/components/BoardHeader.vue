@@ -2,7 +2,14 @@
     <div class="header">
         <div class="container">
             <div class="header__inner">
-                <board-logo :text="'dash board'" />
+
+                <div class="left--col">
+                    <board-logo :text="'dash board'" />
+                    <btn-edit v-if="$route.path != '/'" @click="backLink" class="dark">
+                        <span class="i-arrow"></span>
+                    </btn-edit>
+                </div>
+                
                 <div class="right--col">
                     <input-search
                         :placeholder="'Search from all...'"
@@ -19,7 +26,17 @@
 
 <script>
     export default {
-        name: 'board-header'
+        name: 'board-header',
+        methods: {
+            backLink() {
+                let back = this.$route.path.substring(1, this.$route.path.length).split('/');
+                if(back[0] != '') {
+                    let forward = '/';
+                    for(let i = 0; i < (back.length-1); i++) forward += back[i];
+                    this.$router.push(forward);
+                }
+            }
+        }
     }
 </script>
 
@@ -38,6 +55,24 @@
     .header__buttons{
         display: flex;
         align-items: center;
+    }
+
+    .left--col{
+        display: flex;
+        align-items: center;
+
+        .btn--edit{
+            padding: 10px;
+            opacity: 0.7;
+            margin-left: 40px;
+
+            span{
+                font-size: 17px;
+                width: 17px;
+                margin-right: 0; 
+                transform: rotateZ(90deg);
+            }
+        }
     }
 
     .right--col{

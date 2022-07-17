@@ -7,14 +7,12 @@
                 </div>
                 <span>Home</span>
             </menu-item>
-            <menu-item :link="'/links'" :class="$route.path == '/links' ? 'current' : ''">
+            <menu-item :link="'/links'" :class="$route.path.split('/')[1] == 'links' ? 'current' : ''">
                 <div class="item__icon">
                     <span class="i-link"></span>
                 </div>
                 <span>Links</span>
             </menu-item>
-
-            {{  }}
         </ul>
     </nav>
 </template>
