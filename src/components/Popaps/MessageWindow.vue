@@ -1,7 +1,6 @@
 <template>
     <transition name="message-window" appear>
         <div class="popap popap__message" v-if="message.show" :class="message.type">
-        <!--  -->
             <h3 class="title">{{ message.title }}</h3>
             <div class="text">
                 <p>{{ message.text }}</p>

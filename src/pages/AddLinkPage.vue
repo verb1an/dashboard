@@ -158,8 +158,7 @@ export default {
                 if( response.data.type == 'message' || response.data.type == 'error' ) {
                     this.$emit('dialog:open', response.data);
                 }
-
-                console.log(response)
+                
             }catch(e) {
                 this.$emit('dialog:open', {
                     type: 'error',

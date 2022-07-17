@@ -20,7 +20,13 @@
                 @click="setTab('deleted')"
             >Trash</btn-tab>
         </div>
-        <board-search :link="'/links/add'" @searchQuery="updateSearch" :searchValue="searchQuery" />
+        <board-search 
+            :link="'/links/add'" 
+            @searchQuery="updateSearch" 
+            :searchValue="searchQuery" 
+            :limitValue="limit"
+            @updateLimit="updateLimit"
+        />
         <table class="table">
             <transition name="table-items" appear>
                 <tbody class="tbody">
@@ -230,6 +236,10 @@ export default {
             }
             this.getItems();
         },
+        updateLimit(value) {
+            this.limit = value;
+            this.getItems();
+        },  
 
         generatePageNavigation() {
             this.viewedPages = [];

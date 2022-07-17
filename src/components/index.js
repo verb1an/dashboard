@@ -19,6 +19,9 @@ import BtnTab from '@/components/UI/BtnTab'
 
 import ItemsMenu from '@/components/Popaps/ItemsMenu'
 import MessageWindow from '@/components/Popaps/MessageWindow'
+import ModalWindow from '@/components/Popaps/ModalWindow'
+
+import ModalLimit from '@/components/ModalLimit'
 
 export default [
     BoardHeader,
@@ -41,5 +44,8 @@ export default [
     BtnTab,
 
     ItemsMenu,
-    MessageWindow
+    MessageWindow,
+    ModalWindow,
+
+    ModalLimit
 ]
