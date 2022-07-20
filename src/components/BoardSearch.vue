@@ -8,7 +8,16 @@
                 :value="searchValue"
                 @input="updateSearch"
             />
-            <btn-icn :icon="'i-filters'" @click="viewModalLimit = !viewModalLimit"/>
+            <btn-icn 
+                v-if="searchValue.length > 0"
+                :icon="'i-close'"
+                @click="clearSearch"
+                style="margin-right: 10px;" 
+                class="fz14" />
+            <btn-icn 
+                :icon="'i-filters'" 
+                @click="viewModalLimit = !viewModalLimit"
+            />
 
             <div class="modal__wrapper">
                 <modal-limit 
@@ -17,7 +26,6 @@
                     :limitValue="limitValue"
                     @updateLimit="updateLimit"
                 />
-
             </div>
         </div>
         <div class="right--col">
@@ -52,6 +60,9 @@
             updateSearch(event) {
                 this.$emit('searchQuery', event.target.value)
             },
+            clearSearch() {
+                this.$emit('searchQuery', '')
+            },  
             updateLimit(limit) {
                 this.viewModalLimit = false;
                 this.$emit('updateLimit', limit);

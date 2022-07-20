@@ -16,6 +16,8 @@ import BtnDef from '@/components/UI/BtnDef'
 import BtnEdit from '@/components/UI/BtnEdit'
 import BtnPage from '@/components/UI/BtnPage'
 import BtnTab from '@/components/UI/BtnTab'
+import BoardLoader from '@/components/UI/BoardLoader'
+import PlaneMessage from '@/components/UI/PlaneMessage'
 
 import ItemsMenu from '@/components/Popaps/ItemsMenu'
 import MessageWindow from '@/components/Popaps/MessageWindow'
@@ -42,6 +44,8 @@ export default [
     BtnEdit,
     BtnPage,
     BtnTab,
+    BoardLoader,
+    PlaneMessage,
 
     ItemsMenu,
     MessageWindow,

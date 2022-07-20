@@ -76,14 +76,17 @@
                 </tbody>
             </transition>
         </table>
-        <h4 class="plane__message no-items-found" v-if="links.length == 0">
-            Не найдено ни одного элемента...
-        </h4>
+
+        <plane-message 
+            v-if="links.length == 0" 
+            :text="'Не найдено ни одного элемента...'" 
+            class="no-items-found" 
+        />
 
         <!-- * Лоадер -->
-        <div v-if="showLoad" class="lds-ellipsis">
-            <div></div><div></div><div></div><div></div>
-        </div>
+        <board-loader 
+            :show="showLoad"
+        />
     </div>
 
     <table-nav
@@ -93,18 +96,17 @@
         @set:page="setPage"
     />
 
-    <transition name="menu-items">
-        <items-menu 
-            v-if="showItemsMenu"
-            :count="selected.length"
-            @removeall="changeAllItems(false)"
+    <items-menu 
+        :show="showItemsMenu"
+        :count="selected.length"
+        @removeall="changeAllItems(false)"
 
-            :edit="selected[0]"
-            :toArchive="selected"
-            :toTrash="selected"
-        />
-    </transition>
+        :edit="selected[0]"
+        :selected="selected"
+        :currentStatus="currentSelectedItemStatus"
 
+        @dialog:open="openDialog"
+    />
 </template>
 
 <script>
@@ -131,7 +133,9 @@ export default {
 
             totalItems: 0,
             archiveItems: 0,
-            trashItems: 0
+            trashItems: 0,
+
+            currentSelectedItemStatus: ''
         }
     },
     props: {
@@ -205,8 +209,19 @@ export default {
                 item.classList.add('selected');
             }else{
                 let delItem = this.selected.indexOf(itemId);
-                this.selected.splice(delItem, delItem+1);
+                this.selected.splice(delItem, 1);
                 item.classList.remove('selected');
+            }
+
+            if(this.selected.length == 1) {
+                this.links.forEach((el) => {
+                    if(el.id == this.selected[0]) {
+                        this.currentSelectedItemStatus = el.status;
+                        return;
+                    }
+                });
+            }else{
+                this.currentSelectedItemStatus = '';
             }
         },
         showItemsMenuChecking() {
@@ -237,6 +252,7 @@ export default {
             this.getItems();
         },
         updateLimit(value) {
+            this.page = 1;
             this.limit = value;
             this.getItems();
         },  
@@ -256,6 +272,11 @@ export default {
         setTab(value) {
             this.getParam = value;
             this.getItems();
+        },
+
+        openDialog(data) {
+            this.$emit('dialog:open', data);
+            this.getItems();
         }
 
     },
@@ -271,7 +292,6 @@ export default {
     position: relative;
     min-height: 725px;
 }
-
 .tabs{
     background-color: vars.$light-gray-color;
     display: flex;
@@ -394,14 +414,6 @@ export default {
         }
     }
 }
-
-.plane__message{
-    font-size: 20px;
-    font-weight: 400;
-    margin: 40px 20px;
-    text-align: center;
-}
-
 .table-items-enter-active,table-items-leave-active {
     transition: 0.5s ease;
 }
@@ -409,81 +421,10 @@ export default {
     opacity: 0; 
     transform: scale(0.95);
 }
-
 .table-tr-enter-active,table-tr-leave-active {
     transition: 0.5s ease;
 }
 .table-tr-enter-from, .table-tr-leave-to {
     opacity: 0; 
-}
-
-.menu-items-enter-active,.menu-items-leave-active {
-    transition: 0.5s ease;
-    transform: translate(-50%, -40px) ;
-}
-.menu-items-enter-from.menu__items,.menu-items-leave-to.menu__items {
-    opacity: 0;
-    transform: translate(-50%, 0);
-}
-
-.lds-ellipsis {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: inline-block;
-    width: 80px;
-    height: 80px;
-    div {
-        position: absolute;
-        top: 33px;
-        width: 13px;
-        height: 13px;
-        border-radius: 50%;
-        background: vars.$blue-color-05;
-        animation-timing-function: cubic-bezier(0, 1, 1, 0);
-        &:nth-child(1) {
-            left: 8px;
-            animation: lds-ellipsis1 0.6s infinite;
-        }
-        &:nth-child(2) {
-            left: 8px;
-            animation: lds-ellipsis2 0.6s infinite;
-        }
-        &:nth-child(3) {
-            left: 32px;
-            animation: lds-ellipsis2 0.6s infinite;
-        }
-        &:nth-child(4) {
-            left: 56px;
-            animation: lds-ellipsis3 0.6s infinite;
-        }
-    }
-
-    @keyframes lds-ellipsis1 {
-        0% {
-            transform: scale(0);
-        }
-        100% {
-            transform: scale(1);
-        }
-    }
-    @keyframes lds-ellipsis3 {
-        0% {
-            transform: scale(1);
-        }
-        100% {
-            transform: scale(0);
-        }
-    }
-    @keyframes lds-ellipsis2 {
-        0% {
-            transform: translate(0, 0);
-        }
-        100% {
-            transform: translate(24px, 0);
-        }
-    }
-
 }
 </style>

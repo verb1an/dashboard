@@ -61,5 +61,12 @@
             transform: scale(0.95);
         }
     }
+
+    &.fz14{
+        span{
+            font-size: 14px;
+            height: 14px;
+        }
+    }
 }
 </style>

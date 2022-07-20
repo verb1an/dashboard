@@ -1,32 +1,53 @@
 <template>
-    <div class="popap menu__items">
-        <btn-icn 
-            class="icon--white"
-            @click="removeAllItems"
-            :icon="'i-close'"
-        />
-        <h4 class="title">
-            {{ count }} items selected
-        </h4>
-        <div class="buttons">
-            <btn-edit v-if="count == 1" :icon="'i-pen'" @click="$router.push('/links/' + edit)">
-                Edit
-            </btn-edit>
-            <btn-edit class="yellow" :icon="'i-stopwatch'" @click="sendArchive">
-                To archive
-            </btn-edit>
-            <btn-edit class="red" :icon="'i-trash'">
-                Delete
-            </btn-edit>
+    <transition name="menu-items">
+        <div class="popap menu__items" v-if="show">
+            <btn-icn 
+                class="icon--white"
+                @click="removeAllItems"
+                :icon="'i-close'"
+            />
+            <h4 class="title">
+                {{ count }} items selected
+            </h4>
+            <div class="buttons">
+                <btn-edit v-if="count == 1" :icon="'i-pen'" @click="$router.push('/links/' + edit)">
+                    Edit
+                </btn-edit>
+                <btn-edit v-if="currentStatus != 'active'" class="green" :icon="'i-check'" @click="sendQuick('active')">
+                    to active
+                </btn-edit>
+                <btn-edit v-if="currentStatus != 'archived'" class="yellow" :icon="'i-stopwatch'" @click="sendQuick('archived')">
+                    To archive
+                </btn-edit>
+                <btn-edit v-if="currentStatus != 'deleted'" class="red" :icon="'i-trash'" @click="sendQuick('deleted')">
+                    Delete
+                </btn-edit>
+            </div>
         </div>
-        
-    </div>
+
+    </transition>
 </template>
 
 <script>
+import axios from 'axios';
+
     export default {
         name: 'items-menu',
+        data() {
+            return {
+                sendUrl: 'http://localhost/sibup/dashboard/server/getlinks.php',
+                sendHeaders: {
+                    "Content-Type": "multipart/form-data",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods" : "GET,POST,PUT,DELETE,OPTIONS",
+                }
+            }
+        },  
         props: {
+            show: {
+                type: Boolean,
+                required: true
+            },
             count: {
                 type: Number,
                 required: true
@@ -35,12 +56,12 @@
                 type: Number,
                 required: false
             },
-            toArchive: {
+            selected: {
                 type: Array,
                 required: false
             },
-            toTrash: {
-                type: Array,
+            currentStatus: {
+                type: String,
                 required: false
             }
         },
@@ -48,8 +69,25 @@
             removeAllItems() {
                 this.$emit('removeall');
             },
-            async sendArchive() {
-                console.log('123');
+            async sendQuick(status) {
+                let form = new FormData();
+                form.append('quick', JSON.stringify({
+                    action: status,
+                    data: this.selected
+                }));
+                try{
+                    const response = await axios.post(this.sendUrl, form, this.sendHeaders);
+                    if(response.data.type == 'message' || response.data.type == 'error' ) {
+                        this.$emit('dialog:open', response.data);
+                    }
+                }catch(e) {
+                    this.$emit('dialog:open', {
+                        type: 'error',
+                        title: 'Неизвестная ошибка',
+                        text: e,
+                        redirect: false
+                    });
+                }
             },
             async sendTrash() {
 
@@ -91,5 +129,14 @@
             }
         }
     }
+}
+
+.menu-items-enter-active,.menu-items-leave-active {
+    transition: 0.3s ease;
+    transform: translate(-50%, -40px) ;
+}
+.menu-items-enter-from.menu__items,.menu-items-leave-to.menu__items {
+    opacity: 0;
+    transform: translate(-50%, 0);
 }
 </style>

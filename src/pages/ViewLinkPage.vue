@@ -145,12 +145,14 @@ methods: {
     collectLinks(loadArray) {
         let array = [];
         loadArray.forEach((el) => {
-            array.push({
-                value: el.id,
-                name: el.name,
-                sub: el.sub,
-                parent: el.parent
-            });
+            if(el.status != 'deleted') {
+                array.push({
+                    value: el.id,
+                    name: el.name,
+                    sub: el.sub,
+                    parent: el.parent
+                });
+            }
         });
         let mArr = [];
 

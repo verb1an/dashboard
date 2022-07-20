@@ -45,7 +45,9 @@
         &.dark{
             background-color: vars.$dark-color-05;
         }
-
+        &.green{
+            background-color: vars.$green-color;
+        }
         &.red{
             background-color: vars.$red-color-07;
         }
