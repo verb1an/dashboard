@@ -22,6 +22,7 @@ import PlaneMessage from '@/components/UI/PlaneMessage'
 import ItemsMenu from '@/components/Popaps/ItemsMenu'
 import MessageWindow from '@/components/Popaps/MessageWindow'
 import ModalWindow from '@/components/Popaps/ModalWindow'
+import QuickAction from '@/components/Popaps/QuickAction'
 
 import ModalLimit from '@/components/ModalLimit'
 
@@ -50,6 +51,7 @@ export default [
     ItemsMenu,
     MessageWindow,
     ModalWindow,
+    QuickAction,
 
     ModalLimit
 ]

@@ -1,112 +1,121 @@
 <template>
-    <div class="wrapper">
-        <div class="tabs">
-            <btn-tab 
-                :icon="'i-layout-list'"
-                :count="totalItems"
-                :class="getParam == 'all' ? 'current' : '' "
-                @click="setTab('all')"
-            >All</btn-tab>
-            <btn-tab 
-                :icon="'i-stopwatch'"
-                :count="archiveItems"
-                :class="getParam == 'archived' ? 'current' : '' "
-                @click="setTab('archived')"
-            >Archive</btn-tab>
-            <btn-tab 
-                :icon="'i-trash'" 
-                :count="trashItems"
-                :class="getParam == 'deleted' ? 'current' : '' "
-                @click="setTab('deleted')"
-            >Trash</btn-tab>
-        </div>
-        <board-search 
-            :link="'/links/add'" 
-            @searchQuery="updateSearch" 
-            :searchValue="searchQuery" 
-            :limitValue="limit"
-            @updateLimit="updateLimit"
-        />
-        <table class="table">
-            <transition name="table-items" appear>
-                <tbody class="tbody">
-                    <tr>
-                        <th>
-                            <input-check :id="'check__all'" :checkAll="true" :icon="'i-minus'" v-model="checkAll" @change="changeAllItems"  />
-                        </th>
-                        <th class="current">
-                            <span @click="updateSortParam" data-sort="id">Id</span>
-                            <a @click="updateDirectParam"><svg width="12" height="17" viewBox="0 0 12 17" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.65697 0L6.65697 1.74846e-07L6.65697 12.8283L9.8995 9.58579L11.3137 11L5.65685 16.6569L0 11L1.41421 9.58579L4.65697 12.8285L4.65697 0Z"/>
-                            </svg></a>
-                        </th>
-                        <th>
-                            <span @click="updateSortParam" data-sort="name">Name</span>
-                            <a @click="updateDirectParam"><svg width="12" height="17" viewBox="0 0 12 17" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.65697 0L6.65697 1.74846e-07L6.65697 12.8283L9.8995 9.58579L11.3137 11L5.65685 16.6569L0 11L1.41421 9.58579L4.65697 12.8285L4.65697 0Z"/>
-                            </svg></a>
-                        </th>
-                        <th>
-                            <span @click="updateSortParam" data-sort="status">Status</span>
-                            <a @click="updateDirectParam"><svg width="12" height="17" viewBox="0 0 12 17" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.65697 0L6.65697 1.74846e-07L6.65697 12.8283L9.8995 9.58579L11.3137 11L5.65685 16.6569L0 11L1.41421 9.58579L4.65697 12.8285L4.65697 0Z"/>
-                            </svg></a>
-                        </th>
-                        <th>
-                            <span @click="updateSortParam" data-sort="parent">Parent</span>
-                            <a @click="updateDirectParam"><svg width="12" height="17" viewBox="0 0 12 17" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.65697 0L6.65697 1.74846e-07L6.65697 12.8283L9.8995 9.58579L11.3137 11L5.65685 16.6569L0 11L1.41421 9.58579L4.65697 12.8285L4.65697 0Z"/>
-                            </svg></a>
-                        </th>
-                    </tr>
-                    <transition-group name="table-tr" appear>
-                        <tr v-for="link in links" :key="link.id" :data-id="link.id">
-                            <td class="td__check">
-                                <input-check :icon="'i-check'" class="check__link" @change="selectItem" />
-                            </td>
-                            <td @click="$router.push('/links/' + link.id)" class="td__link">#id-{{ link.id }}</td>
-                            <td @click="$router.push('/links/' + link.id)" class="td__link">{{ link.name }}</td>
-                            <td>{{ link.status }}</td>
-                            <td>{{ link.parent }}</td>
-                            <td class="td__quiks">
-                                <btn-icn :icon="'i-more'" />
-                            </td>
-                        </tr>
-                    </transition-group>
-                </tbody>
-            </transition>
-        </table>
-
-        <plane-message 
-            v-if="links.length == 0" 
-            :text="'Не найдено ни одного элемента...'" 
-            class="no-items-found" 
-        />
-
-        <!-- * Лоадер -->
-        <board-loader 
-            :show="showLoad"
-        />
+<div class="wrapper">
+    <div class="tabs">
+        <btn-tab 
+            :icon="'i-layout-list'"
+            :count="totalItems"
+            :class="getParam == 'all' ? 'current' : '' "
+            @click="setTab('all')"
+        >All</btn-tab>
+        <btn-tab 
+            :icon="'i-stopwatch'"
+            :count="archiveItems"
+            :class="getParam == 'archived' ? 'current' : '' "
+            @click="setTab('archived')"
+        >Archive</btn-tab>
+        <btn-tab 
+            :icon="'i-trash'" 
+            :count="trashItems"
+            :class="getParam == 'deleted' ? 'current' : '' "
+            @click="setTab('deleted')"
+        >Trash</btn-tab>
     </div>
+    <board-search 
+        :link="'/links/add'" 
+        @searchQuery="updateSearch" 
+        :searchValue="searchQuery" 
+        :limitValue="limit"
+        @updateLimit="updateLimit"
+    />
+    <table class="table">
+        <transition name="table-items" appear>
+            <tbody class="tbody">
+                <tr>
+                    <th>
+                        <input-check :id="'check__all'" :checkAll="true" :icon="'i-minus'" v-model="checkAll" @change="changeAllItems"  />
+                    </th>
+                    <th class="current">
+                        <span @click="updateSortParam" data-sort="id">Id</span>
+                        <a @click="updateDirectParam"><span class="i-arrow"></span></a>
+                    </th>
+                    <th>
+                        <span @click="updateSortParam" data-sort="name">Name</span>
+                        <a @click="updateDirectParam"><span class="i-arrow"></span></a>
+                    </th>
+                    <th>
+                        <span @click="updateSortParam" data-sort="status">Status</span>
+                        <a @click="updateDirectParam"><span class="i-arrow"></span></a>
+                    </th>
+                    <th>
+                        <span @click="updateSortParam" data-sort="parent">Parent</span>
+                        <a @click="updateDirectParam"><span class="i-arrow"></span></a>
+                    </th>
+                </tr>
+                <transition-group name="table-tr" appear>
+                    <tr v-for="link in links" :key="link.id" :data-id="link.id">
+                        <td class="td__check">
+                            <input-check :icon="'i-check'" class="check__link" @change="selectItem" />
+                        </td>
+                        <td @click="$router.push('/links/' + link.id)" class="td__link">#id-{{ link.id }}</td>
+                        <td @click="$router.push('/links/' + link.id)" class="td__link">{{ link.name }}</td>
+                        <td class="td__status" :class="link.status">{{ link.status }}</td>
+                        <td>{{ link.parent }}</td>
+                        <td class="td__quiks">
+                            <btn-icn 
+                                :icon="'i-more'"
+                                @click="openQuickActionsMenu"
+                            />
+                        </td>
+                    </tr>
+                </transition-group>
 
-    <table-nav
-        v-if="viewedPages.length > 1"
-        :vPages="viewedPages"
-        :page="page"
-        @set:page="setPage"
+                <div class="quick-action__wrapper">
+                    <modal-window 
+                        :show="quickActionItem"
+                        @modal:close="quickActionItem = 0"
+                        style="padding: 0 10px"
+                    >
+                        <quick-action 
+                            :item="quickActionItem"
+                            @dialog:open="openDialog"
+                            @modal:close="quickActionItem = 0"
+                        />
+                    </modal-window>
+                </div>
+            </tbody>
+        </transition>
+    </table>
+
+    <plane-message 
+        v-if="links.length == 0" 
+        :text="'Не найдено ни одного элемента...'" 
+        class="no-items-found" 
     />
 
-    <items-menu 
-        :show="showItemsMenu"
-        :count="selected.length"
-        @removeall="changeAllItems(false)"
-
-        :edit="selected[0]"
-        :selected="selected"
-        :currentStatus="currentSelectedItemStatus"
-
-        @dialog:open="openDialog"
+    <!-- * Лоадер -->
+    <board-loader 
+        :show="showLoad"
     />
+</div>
+
+<table-nav
+    v-if="viewedPages.length > 1"
+    :vPages="viewedPages"
+    :page="page"
+    @set:page="setPage"
+/>
+
+<items-menu 
+    :show="showItemsMenu"
+    :count="selected.length"
+    @removeall="changeAllItems(false)"
+
+    :edit="selected[0]"
+    :selected="selected"
+    :currentStatus="currentSelectedItemStatus"
+
+    @dialog:open="openDialog"
+/>
 </template>
 
 <script>
@@ -118,6 +127,7 @@ export default {
             showLoad: false,
             links: [],
             selected: [],
+            sendUrl: 'http://f0664869.xsph.ru/getlinks.php',
 
             checkAll: false,
 
@@ -135,7 +145,9 @@ export default {
             archiveItems: 0,
             trashItems: 0,
 
-            currentSelectedItemStatus: ''
+            currentSelectedItemStatus: '',
+
+            quickActionItem: 0,
         }
     },
     props: {
@@ -151,7 +163,7 @@ export default {
             this.changeAllItems(false);
             this.showLoad = true;
             try {
-                const response = await axios.get('http://localhost/sibup/dashboard/server/getlinks.php?', {
+                const response = await axios.get(this.sendUrl, {
                     params: {
                         links: this.getParam,
                         search: this.searchQuery,
@@ -182,7 +194,6 @@ export default {
                 this.showLoad = false;
             }
         },
-
         selectItem(event) {
             this.editSelectedList(event.target);
             this.showItemsMenuChecking();
@@ -229,7 +240,6 @@ export default {
             document.querySelector('#check__all').checked = this.selected.length > 0;
             this.showItemsMenu = this.selected.length > 0;
         },
-
         updateSearch(value) {
             this.searchQuery = value;
             this.getItems();
@@ -256,27 +266,30 @@ export default {
             this.limit = value;
             this.getItems();
         },  
-
         generatePageNavigation() {
             this.viewedPages = [];
             for(let i = (this.page-2); i <= (this.page+2); i++) {
                 if( i > 0 && i <= this.totalPages ) this.viewedPages.push(i);
             }
         },
-
         setPage(value) {
             this.page = value;
             this.getItems();
         },
-
         setTab(value) {
             this.getParam = value;
             this.getItems();
         },
-
         openDialog(data) {
             this.$emit('dialog:open', data);
             this.getItems();
+        },
+        openQuickActionsMenu(event) {
+            const item = event.target.classList.contains('btn') ? event.target : event.target.parentNode;
+            const parent = item.parentNode.parentNode;
+            const topPos = Math.floor(parent.offsetTop) - 65;
+            document.querySelector('.tbody').style = `--topPos: ${topPos}px`;
+            this.quickActionItem = parent.getAttribute('data-id');
         }
 
     },
@@ -301,13 +314,13 @@ export default {
 .table{
     width: 100%;
     .tbody{
+        position: relative;
         width: 100%;
         tr{
             position: relative;
             display: grid;
             grid-template-columns: 40px 250px 400px 250px 100px auto;
             text-align: left;
-
             td, th{
                 display: block;
                 padding: 20px 50px 20px 10px;
@@ -333,10 +346,33 @@ export default {
                 }
 
                 &.td__quiks{
+                    position: relative;
                     padding-right: 10px;
                     text-align: right;
                     display: flex;
                     justify-content: end;
+                }
+
+                &.td__status{
+                    display: flex;
+                    align-items: center;
+                    &::before{
+                        content: '';
+                        display: block;
+                        width: 12px;
+                        height: 12px;
+                        margin-right: 6px;
+                        border-radius: 50%;
+                    }
+                    &.active::before{
+                        background-color: vars.$green-color;
+                    }
+                    &.archived::before{
+                        background-color: vars.$yellow-color;
+                    }
+                    &.deleted::before{
+                        background-color: vars.$red-color;
+                    }
                 }
             }
 
@@ -358,9 +394,8 @@ export default {
                     pointer-events: none;
                     transform-origin: center;
                     
-                    svg{
-                        fill: vars.$blue-color;
-                        pointer-events: none;
+                    span{
+                        color: vars.$blue-color;
                     }
 
                     &.top{
@@ -384,8 +419,6 @@ export default {
                     opacity: 1;
                 }
             }
-            
-
             &:nth-child(1n+1) {
                 background-color: vars.$white-color;
                 
@@ -411,6 +444,14 @@ export default {
                     height: 100%;
                 }
             }
+        }
+        .quick-action__wrapper{
+            position: absolute;
+            top: var(--topPos);
+            right: 0;
+            transform: translate(0, 100%);
+            z-index: 100;
+            transition: .12s;
         }
     }
 }

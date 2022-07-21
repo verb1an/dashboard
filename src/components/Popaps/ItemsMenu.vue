@@ -1,25 +1,25 @@
 <template>
     <transition name="menu-items">
-        <div class="popap menu__items" v-if="show">
+        <div class="popap menu__items" v-show="show">
             <btn-icn 
                 class="icon--white"
                 @click="removeAllItems"
                 :icon="'i-close'"
             />
             <h4 class="title">
-                {{ count }} items selected
+                {{ count || 1 }} items selected
             </h4>
             <div class="buttons">
-                <btn-edit v-if="count == 1" :icon="'i-pen'" @click="$router.push('/links/' + edit)">
+                <btn-edit v-show="!count || count == 1" :icon="'i-pen'" @click="$router.push('/links/' + edit)">
                     Edit
                 </btn-edit>
-                <btn-edit v-if="currentStatus != 'active'" class="green" :icon="'i-check'" @click="sendQuick('active')">
+                <btn-edit v-show="count > 0 && currentStatus != 'active'" class="green" :icon="'i-check'" @click="sendQuick('active')">
                     to active
                 </btn-edit>
-                <btn-edit v-if="currentStatus != 'archived'" class="yellow" :icon="'i-stopwatch'" @click="sendQuick('archived')">
+                <btn-edit v-show="currentStatus != 'archived'" class="yellow" :icon="'i-stopwatch'" @click="sendQuick('archived')">
                     To archive
                 </btn-edit>
-                <btn-edit v-if="currentStatus != 'deleted'" class="red" :icon="'i-trash'" @click="sendQuick('deleted')">
+                <btn-edit v-show="currentStatus != 'deleted'" class="red" :icon="'i-trash'" @click="sendQuick('deleted')">
                     Delete
                 </btn-edit>
             </div>
@@ -35,7 +35,7 @@ import axios from 'axios';
         name: 'items-menu',
         data() {
             return {
-                sendUrl: 'http://localhost/sibup/dashboard/server/getlinks.php',
+                sendUrl: 'http://f0664869.xsph.ru/getlinks.php',
                 sendHeaders: {
                     "Content-Type": "multipart/form-data",
                     "Access-Control-Allow-Origin": "*",
@@ -88,9 +88,6 @@ import axios from 'axios';
                         redirect: false
                     });
                 }
-            },
-            async sendTrash() {
-
             }
         }
     }
@@ -123,6 +120,7 @@ import axios from 'axios';
 
         .btn{
             margin-right: 10px;
+            transition: .12s;
 
             .icon{
                 padding-top: 3px;

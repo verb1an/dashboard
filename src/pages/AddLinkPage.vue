@@ -67,6 +67,7 @@ export default {
         return {
             links: [],
             linkstype: 0,
+            sendUrl: 'http://f0664869.xsph.ru/getlinks.php',
 
             add: {
                 name: '',
@@ -79,7 +80,7 @@ export default {
     methods: {
         async getItems() {
                 try{
-                const response = await axios.get('http://localhost/sibup/dashboard/server/getlinks.php', {
+                const response = await axios.get(this.sendUrl, {
                     params: {
                         links: 'all', search: '', sort: '', direct: ''
                     }
@@ -151,10 +152,9 @@ export default {
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Methods" : "GET,POST,PUT,DELETE,OPTIONS",
             }
-            const url = 'http://localhost/sibup/dashboard/server/getlinks.php'
             try{
                 
-                const response = await axios.post(url, form, headers );
+                const response = await axios.post(this.sendUrl, form, headers );
                 if( response.data.type == 'message' || response.data.type == 'error' ) {
                     this.$emit('dialog:open', response.data);
                 }

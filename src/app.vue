@@ -1,28 +1,27 @@
 <template>
-    <div class="app-wrapper">
-        <board-header />
-        <main class="main">
-            <div class="container">
-                <div class="main__inner">
-                    <main-nav></main-nav>
-                    <div class="content">
-                        
-                        <div class="content-wrapper">
-                            <router-view
-                                @dialog:open="openMessageDialog"
-                            ></router-view>
-                        </div>
+<div class="app-wrapper">
+    <board-header />
+    <main class="main">
+        <div class="container">
+            <div class="main__inner">
+                <main-nav></main-nav>
+                <div class="content">
+                    <div class="content-wrapper">
+                        <router-view
+                            @dialog:open="openMessageDialog"
+                        ></router-view>
                     </div>
                 </div>
             </div>
-        </main>
+        </div>
+    </main>
 
-        <message-window 
-            :message="message"
-            @dialog:close="closeMessageDialog"
-        />
+    <message-window 
+        :message="message"
+        @dialog:close="closeMessageDialog"
+    />
 
-    </div>
+</div>
 </template>
 
 <script>

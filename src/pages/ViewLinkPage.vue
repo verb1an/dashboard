@@ -77,13 +77,14 @@ data() {
             link: '',
             status: ''
         },
-        links: []
+        links: [],
+        sendUrl: 'http://f0664869.xsph.ru/getlinks.php'
     }
 },
 methods: {
     async getItem() {
         try{
-            const response = await axios('http://localhost/sibup/dashboard/server/getlinks.php', {
+            const response = await axios(this.sendUrl, {
                 params: {
                     linkbyid: this.linkId
                 }
@@ -100,13 +101,18 @@ methods: {
                 this.$emit('dialog:open', response.data);
             }
         }catch(e) {
-            // this.setMessageInfo(true, 'error', 'Неизвестная ошибка!', e);
+            this.$emit('dialog:open', {
+                type: 'error',
+                title: 'Неизвестная ошибка',
+                text: e,
+                redirect: false
+            });
         }
         
     },
     async getParentItems() {
         try{
-            const response = await axios.get('http://localhost/sibup/dashboard/server/getlinks.php', {
+            const response = await axios.get(this.sendUrl, {
                 params: {
                     links: 'all', search: '', sort: '', direct: ''
                 }
@@ -114,7 +120,12 @@ methods: {
             this.collectLinks(response.data);
             
         }catch(e) {
-            this.setMessageInfo(true, 'error', 'Неизвестная ошибка!', e);
+            this.$emit('dialog:open', {
+                type: 'error',
+                title: 'Неизвестная ошибка',
+                text: e,
+                redirect: false
+            });
         }
     },
     async updateLink() {
@@ -125,10 +136,8 @@ methods: {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods" : "GET,POST,PUT,DELETE,OPTIONS",
         }
-        const url = 'http://localhost/sibup/dashboard/server/getlinks.php'
-
         try{
-            const response = await axios.post(url, form, headers);
+            const response = await axios.post(this.sendUrl, form, headers);
             if( response.data.type == 'message' || response.data.type == 'error' ) {
                 this.$emit('dialog:open', response.data);
                 this.getItem();
