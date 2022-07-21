@@ -127,7 +127,7 @@ export default {
             showLoad: false,
             links: [],
             selected: [],
-            sendUrl: 'http://f0664869.xsph.ru/getlinks.php',
+            sendUrl: '//f0664869.xsph.ru/getlinks.php',
 
             checkAll: false,
 
@@ -172,6 +172,11 @@ export default {
 
                         page: this.page,
                         limit: this.limit
+                    },
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Methods" : "GET,POST,PUT,DELETE,OPTIONS",
                     }
                 }); 
                 if(typeof response.data == 'object' && !response.data.type) {

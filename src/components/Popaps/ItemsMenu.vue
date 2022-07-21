@@ -35,7 +35,7 @@ import axios from 'axios';
         name: 'items-menu',
         data() {
             return {
-                sendUrl: 'http://f0664869.xsph.ru/getlinks.php',
+                sendUrl: '//f0664869.xsph.ru/getlinks.php',
                 sendHeaders: {
                     "Content-Type": "multipart/form-data",
                     "Access-Control-Allow-Origin": "*",

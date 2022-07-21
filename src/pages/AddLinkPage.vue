@@ -67,7 +67,7 @@ export default {
         return {
             links: [],
             linkstype: 0,
-            sendUrl: 'http://f0664869.xsph.ru/getlinks.php',
+            sendUrl: '//f0664869.xsph.ru/getlinks.php',
 
             add: {
                 name: '',

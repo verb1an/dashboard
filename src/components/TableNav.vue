@@ -1,7 +1,7 @@
 <template>
     <div class="page__navigation">
         <btn-page @click="setPage('dec')" v-if="page>1" style="transform: rotateZ(180deg); padding-right: 1px;">
-            <span class="i-home"></span>
+            <span class="i-chevron"></span>
         </btn-page>
         <btn-page 
             @return:value="setPage"
@@ -11,7 +11,7 @@
             :class="vPage == page ? 'current' : ''"
         >{{vPage}}</btn-page>
         <btn-page @click="setPage('inc')" v-if="page < vPages.length" style="transform: rotateZ(0); padding-left: 8px;">
-            <span class="i-link"></span>
+            <span class="i-chevron"></span>
         </btn-page>
     </div>
 </template>

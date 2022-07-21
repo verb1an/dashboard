@@ -78,15 +78,20 @@ data() {
             status: ''
         },
         links: [],
-        sendUrl: 'http://f0664869.xsph.ru/getlinks.php'
+        sendUrl: '//f0664869.xsph.ru/getlinks.php'
     }
 },
 methods: {
     async getItem() {
         try{
-            const response = await axios(this.sendUrl, {
+            const response = await axios.get(this.sendUrl, {
                 params: {
                     linkbyid: this.linkId
+                },
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods" : "GET,POST,PUT,DELETE,OPTIONS",
                 }
             });
             if(response.data.id) {
@@ -115,6 +120,11 @@ methods: {
             const response = await axios.get(this.sendUrl, {
                 params: {
                     links: 'all', search: '', sort: '', direct: ''
+                },
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods" : "GET,POST,PUT,DELETE,OPTIONS",
                 }
             }); 
             this.collectLinks(response.data);
