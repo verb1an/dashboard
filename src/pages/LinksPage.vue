@@ -283,6 +283,7 @@ export default {
         },
         setTab(value) {
             this.getParam = value;
+            this.page = 1;
             this.getItems();
         },
         openDialog(data) {
