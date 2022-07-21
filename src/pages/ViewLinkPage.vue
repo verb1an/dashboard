@@ -78,7 +78,7 @@ data() {
             status: ''
         },
         links: [],
-        sendUrl: '//f0664869.xsph.ru/getlinks.php'
+        sendUrl: '//f0664869.xsph.ru/dashboard/getlinks.php'
     }
 },
 methods: {

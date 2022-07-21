@@ -25,7 +25,7 @@ import axios from 'axios';
         name: 'quick-action',
         data() {
             return {
-                sendUrl: '//f0664869.xsph.ru/getlinks.php',
+                sendUrl: '//f0664869.xsph.ru/dashboard/getlinks.php',
                 sendHeaders: {
                     "Content-Type": "multipart/form-data",
                     "Access-Control-Allow-Origin": "*",

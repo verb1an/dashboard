@@ -127,7 +127,7 @@ export default {
             showLoad: false,
             links: [],
             selected: [],
-            sendUrl: '//f0664869.xsph.ru/getlinks.php',
+            sendUrl: '//f0664869.xsph.ru/dashboard/getlinks.php',
 
             checkAll: false,
 
